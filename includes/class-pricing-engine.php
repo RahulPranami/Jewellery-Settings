@@ -244,18 +244,25 @@ class Pricing_Engine {
 			return 0;
 		}
 
+		// DEBUG: Log all attributes for this variation to find the correct key
+		$all_attributes = $variation->get_attributes();
+		error_log( 'Jewellery Settings Debug - Variation ID ' . $variation_id . ' attributes: ' . print_r( $all_attributes, true ) );
+
 		// Try multiple possible attribute names (global and custom, hyphen and underscore)
 		$attribute_keys = array(
 			'pa_diamonds_carat',
 			'pa_diamonds-carat',
 			'diamonds_carat',
 			'diamonds-carat',
+			'diamonds',
+			'carat',
 		);
 
 		$value = '';
 		foreach ( $attribute_keys as $key ) {
 			$value = $variation->get_attribute( $key );
 			if ( ! empty( $value ) ) {
+				error_log( 'Jewellery Settings Debug - Found value "' . $value . '" for key "' . $key . '"' );
 				break;
 			}
 		}
