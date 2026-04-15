@@ -1,0 +1,204 @@
+# Translation template for Jewellery Dynamic Pricing plugin
+# Copyright (C) 2024
+# This file is distributed under the same license as the Jewellery Dynamic Pricing plugin.
+
+msgid ""
+msgstr ""
+"Project-Id-Version: Jewellery Dynamic Pricing 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-01-01 00:00:00+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: en\n"
+
+#: includes/class-admin.php:52
+msgid "Jewellery Pricing"
+msgstr ""
+
+#: includes/class-admin.php:98
+msgid "Metal Prices"
+msgstr ""
+
+#: includes/class-admin.php:105
+msgid "Diamond Pricing"
+msgstr ""
+
+#: includes/class-admin.php:112
+msgid "Making Charges"
+msgstr ""
+
+#: includes/class-admin.php:120
+msgid "Enter the base prices for different metals"
+msgstr ""
+
+#: includes/class-admin.php:126
+msgid "Price per carat for diamonds"
+msgstr ""
+
+#: includes/class-admin.php:132
+msgid "Separate making charges for gold and silver"
+msgstr ""
+
+#: includes/class-admin.php:187
+msgid "Gold Price (24K)"
+msgstr ""
+
+#: includes/class-admin.php:191
+msgid "Price per gram"
+msgstr ""
+
+#: includes/class-admin.php:198
+msgid "Silver Price (925)"
+msgstr ""
+
+#: includes/class-admin.php:206
+msgid "18K Gold Price"
+msgstr ""
+
+#: includes/class-admin.php:210
+msgid "(Auto-calculated: 24K × 18/24)"
+msgstr ""
+
+#: includes/class-admin.php:216
+msgid "14K Gold Price"
+msgstr ""
+
+#: includes/class-admin.php:220
+msgid "(Auto-calculated: 24K × 14/24)"
+msgstr ""
+
+#: includes/class-admin.php:226
+msgid "9K Gold Price"
+msgstr ""
+
+#: includes/class-admin.php:230
+msgid "(Auto-calculated: 24K × 9/24)"
+msgstr ""
+
+#: includes/class-admin.php:236
+msgid "Diamond Price Per Carat"
+msgstr ""
+
+#: includes/class-admin.php:241
+msgid "Price per carat"
+msgstr ""
+
+#: includes/class-admin.php:248
+msgid "Making Charges - Gold & Rose Gold"
+msgstr ""
+
+#: includes/class-admin.php:254
+msgid "Making Type"
+msgstr ""
+
+#: includes/class-admin.php:258
+msgid "Percentage (%)"
+msgstr ""
+
+#: includes/class-admin.php:261
+msgid "Flat per Gram"
+msgstr ""
+
+#: includes/class-admin.php:271
+msgid "Making Value"
+msgstr ""
+
+#: includes/class-admin.php:279
+msgid "Making Charges - Silver"
+msgstr ""
+
+#: includes/class-admin.php:306
+msgid "Price Preview Calculator"
+msgstr ""
+
+#: includes/class-admin.php:309
+msgid "Weight (grams)"
+msgstr ""
+
+#: includes/class-admin.php:314
+msgid "Metal"
+msgstr ""
+
+#: includes/class-admin.php:316
+msgid "Gold"
+msgstr ""
+
+#: includes/class-admin.php:317
+msgid "Rose Gold"
+msgstr ""
+
+#: includes/class-admin.php:318
+msgid "Silver"
+msgstr ""
+
+#: includes/class-admin.php:323
+msgid "Purity"
+msgstr ""
+
+#: includes/class-admin.php:326
+msgid "24K"
+msgstr ""
+
+#: includes/class-admin.php:327
+msgid "18K"
+msgstr ""
+
+#: includes/class-admin.php:328
+msgid "14K"
+msgstr ""
+
+#: includes/class-admin.php:329
+msgid "9K"
+msgstr ""
+
+#: includes/class-admin.php:330
+msgid "925 Silver"
+msgstr ""
+
+#: includes/class-admin.php:335
+msgid "Diamond Carat"
+msgstr ""
+
+#: includes/class-admin.php:341
+msgid "Calculate"
+msgstr ""
+
+#: includes/class-admin.php:346
+msgid "Calculated Price:"
+msgstr ""
+
+#: includes/class-admin.php:357
+msgid "Sync Prices"
+msgstr ""
+
+#: includes/class-admin.php:359
+msgid "Update all product variations with calculated prices"
+msgstr ""
+
+#: includes/class-admin.php:360
+msgid "Sync All Prices"
+msgstr ""
+
+#: includes/class-admin.php:370
+msgid "Last synced: %s"
+msgstr ""
+
+#: includes/class-pricing-engine.php:70
+msgid "Weight cannot be negative"
+msgstr ""
+
+#: includes/class-rest-api.php:137
+msgid "You must be logged in to access this endpoint"
+msgstr ""
+
+#: includes/class-rest-api.php:146
+msgid "You do not have permission to access this endpoint"
+msgstr ""
+
+#: includes/class-rest-api.php:170
+msgid "Settings updated successfully"
+msgstr ""
+
+msgid "Unauthorized"
+msgstr ""
