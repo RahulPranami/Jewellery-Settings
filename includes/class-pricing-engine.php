@@ -244,26 +244,41 @@ class Pricing_Engine {
 			return 0;
 		}
 
-		// DEBUG: Log all attributes for this variation to find the correct key
-		$all_attributes = $variation->get_attributes();
-		error_log( 'Jewellery Settings Debug - Variation ID ' . $variation_id . ' attributes: ' . print_r( $all_attributes, true ) );
-
-		// Try multiple possible attribute names (global and custom, hyphen and underscore)
+		// Possible keys based on "Diamonds (Carat)"
 		$attribute_keys = array(
-			'pa_diamonds_carat',
 			'pa_diamonds-carat',
-			'diamonds_carat',
 			'diamonds-carat',
+			'pa_diamonds_carat',
+			'diamonds_carat',
+			'Diamonds (Carat)',
+			'diamonds-(carat)',
+			'pa_diamonds',
 			'diamonds',
-			'carat',
 		);
 
 		$value = '';
 		foreach ( $attribute_keys as $key ) {
 			$value = $variation->get_attribute( $key );
 			if ( ! empty( $value ) ) {
-				error_log( 'Jewellery Settings Debug - Found value "' . $value . '" for key "' . $key . '"' );
 				break;
+			}
+		}
+
+		// Fallback: Check variation meta directly if attribute call fails
+		if ( empty( $value ) ) {
+			// WC Variations often store attributes in meta with 'attribute_' prefix
+			$meta_keys = array(
+				'attribute_pa_diamonds-carat',
+				'attribute_diamonds-carat',
+				'attribute_pa_diamonds_carat',
+				'attribute_diamonds_carat',
+			);
+			foreach ( $meta_keys as $meta_key ) {
+				$meta_val = get_post_meta( $variation_id, $meta_key, true );
+				if ( ! empty( $meta_val ) ) {
+					$value = $meta_val;
+					break;
+				}
 			}
 		}
 
