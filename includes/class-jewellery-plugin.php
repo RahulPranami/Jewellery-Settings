@@ -51,6 +51,77 @@ class Plugin {
 
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_frontend_scripts' ) );
+
+		// Frontend price breakdown
+		add_action( 'woocommerce_single_product_summary', array( $this, 'display_price_breakdown' ), 15 );
+	}
+
+	/**
+	 * Display price breakdown on product page
+	 */
+	public function display_price_breakdown() {
+		$settings = get_option( 'jewellery_settings', array() );
+		if ( empty( $settings['show_breakdown'] ) ) {
+			return;
+		}
+
+		global $product;
+		if ( ! $product || ! $product->is_type( 'variable' ) ) {
+			return;
+		}
+
+		?>
+		<div id="jewellery-price-breakdown" style="margin: 20px 0; padding: 15px; border: 1px solid #eee; border-radius: 5px; background: #fafafa; display: none;">
+			<h4 style="margin-top: 0;"><?php esc_html_e( 'Price Breakdown', 'jewellery-settings' ); ?></h4>
+			<div class="breakdown-content" style="font-size: 14px;">
+				<!-- Content will be populated via JS when variation is selected -->
+				<p><?php esc_html_e( 'Select an option to see price details.', 'jewellery-settings' ); ?></p>
+			</div>
+		</div>
+
+		<script type="text/javascript">
+			jQuery(document).ready(function($) {
+				$(document).on('found_variation', 'form.variations_form', function(event, variation) {
+					var $container = $('#jewellery-price-breakdown');
+					var $content = $container.find('.breakdown-content');
+					
+					// We need to fetch the breakdown from the server because variation object doesn't have it
+					$.ajax({
+						url: '<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>',
+						type: 'POST',
+						data: {
+							action: 'jewellery_get_breakdown',
+							variation_id: variation.variation_id,
+							nonce: '<?php echo esc_js( wp_create_nonce( 'jewellery_breakdown_nonce' ) ); ?>'
+						},
+						success: function(response) {
+							if (response.success) {
+								var data = response.data;
+								var html = '';
+								html += '<div style="display:flex; justify-content:space-between; margin-bottom:5px;"><span>Gold/Metal:</span> <strong>₹' + data.metal_price.toLocaleString() + '</strong></div>';
+								html += '<div style="display:flex; justify-content:space-between; margin-bottom:5px;"><span>Making Charges:</span> <strong>₹' + data.making.toLocaleString() + '</strong></div>';
+								if (data.diamond_price > 0) {
+									html += '<div style="display:flex; justify-content:space-between; margin-bottom:5px;"><span>Diamond Price:</span> <strong>₹' + data.diamond_price.toLocaleString() + '</strong></div>';
+								}
+								if (data.other_charges > 0) {
+									html += '<div style="display:flex; justify-content:space-between; margin-bottom:5px;"><span>Other Charges:</span> <strong>₹' + data.other_charges.toLocaleString() + '</strong></div>';
+								}
+								html += '<hr style="margin: 10px 0; border: 0; border-top: 1px solid #ddd;">';
+								html += '<div style="display:flex; justify-content:space-between; font-weight:bold; font-size:16px;"><span>Total:</span> <span>₹' + data.final_price.toLocaleString() + '</span></div>';
+								
+								$content.html(html);
+								$container.slideDown();
+							}
+						}
+					});
+				});
+
+				$(document).on('reset_data', 'form.variations_form', function() {
+					$('#jewellery-price-breakdown').slideUp();
+				});
+			});
+		</script>
+		<?php
 	}
 
 	/**
@@ -114,6 +185,7 @@ class Plugin {
 					'gold_making_value'    => 0,
 					'silver_making_type'   => 'percentage',
 					'silver_making_value'  => 0,
+					'show_breakdown'       => 0,
 					'last_synced'          => 0,
 				)
 			);

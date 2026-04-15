@@ -132,12 +132,16 @@ jQuery(document).ready(function ($) {
 	// Sync Prices Button
 	let isSyncing = false;
 	let currentOffset = 0;
+	let totalProcessedProducts = 0;
+	let totalUpdatedVariations = 0;
 
 	$('#sync_button').on('click', function () {
 		if (isSyncing) return;
 
 		isSyncing = true;
 		currentOffset = 0;
+		totalProcessedProducts = 0;
+		totalUpdatedVariations = 0;
 
 		$(this).prop('disabled', true);
 		$('#sync_progress').show();
@@ -165,8 +169,8 @@ jQuery(document).ready(function ($) {
 						$('#progress_fill').css('width', '100%').text('100%');
 						$('#sync_status').html(
 							'<strong style="color: #28a745;">✓ Sync Completed Successfully!</strong><br/>' +
-							'<span style="font-size: 12px;">Products processed: <strong>' + data.products + '</strong><br/>' +
-							'Variations updated: <strong>' + data.variations + '</strong></span>'
+							'<span style="font-size: 12px;">Products processed: <strong>' + totalProcessedProducts + '</strong><br/>' +
+							'Variations updated: <strong>' + totalUpdatedVariations + '</strong></span>'
 						);
 
 						setTimeout(function () {
@@ -178,6 +182,9 @@ jQuery(document).ready(function ($) {
 					} else {
 						// Continue syncing - update progress
 						currentOffset = data.offset;
+						totalProcessedProducts += data.products || 0;
+						totalUpdatedVariations += data.variations || 0;
+
 						const totalProducts = data.total_products || currentOffset;
 						const progress = Math.min(95, (currentOffset / totalProducts) * 100);
 
@@ -188,7 +195,7 @@ jQuery(document).ready(function ($) {
 						$('#sync_status').html(
 							'<strong>Processing...</strong><br/>' +
 							'Batch: ' + data.products + ' products<br/>' +
-							'Total updated: ' + data.variations + ' variations'
+							'Total updated: ' + totalUpdatedVariations + ' variations'
 						);
 
 						// Small delay before next batch

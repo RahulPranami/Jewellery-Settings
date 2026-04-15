@@ -45,8 +45,33 @@ class Admin {
 		add_action( 'admin_menu', array( $this, 'add_menu_page' ) );
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
 		add_action( 'wp_ajax_jewellery_preview_price', array( $this, 'ajax_preview_price' ) );
+		add_action( 'wp_ajax_nopriv_jewellery_get_breakdown', array( $this, 'ajax_get_breakdown' ) );
+		add_action( 'wp_ajax_jewellery_get_breakdown', array( $this, 'ajax_get_breakdown' ) );
 		add_action( 'wp_ajax_jewellery_sync_prices', array( $this, 'ajax_sync_prices' ) );
 		add_filter( 'plugin_action_links_' . JEWELLERY_SETTINGS_BASENAME, array( $this, 'add_settings_link' ) );
+	}
+
+	/**
+	 * AJAX get price breakdown
+	 */
+	public function ajax_get_breakdown() {
+		check_ajax_referer( 'jewellery_breakdown_nonce', 'nonce' );
+
+		$variation_id = isset( $_POST['variation_id'] ) ? intval( $_POST['variation_id'] ) : 0;
+		if ( ! $variation_id ) {
+			wp_send_json_error( 'Missing variation ID' );
+		}
+
+		$pricing_engine = Pricing_Engine::get_instance();
+		
+		$weight = $pricing_engine->get_product_weight( $variation_id );
+		$metal = $pricing_engine->get_metal_from_variation( $variation_id );
+		$purity = $pricing_engine->get_purity_from_variation( $variation_id );
+		$diamond_carat = $pricing_engine->get_diamond_carat_from_variation( $variation_id );
+
+		$result = $pricing_engine->calculate_price( $weight, $metal, $purity, $diamond_carat );
+
+		wp_send_json_success( $result );
 	}
 
 	/**
@@ -127,6 +152,9 @@ class Admin {
 		$sanitized['gold_making_type'] = isset( $input['gold_making_type'] ) && in_array( $input['gold_making_type'], array( 'percentage', 'flat_per_gram' ), true ) ? $input['gold_making_type'] : 'percentage';
 		$sanitized['silver_making_type'] = isset( $input['silver_making_type'] ) && in_array( $input['silver_making_type'], array( 'percentage', 'flat_per_gram' ), true ) ? $input['silver_making_type'] : 'percentage';
 
+		// Sanitize checkbox fields
+		$sanitized['show_breakdown'] = isset( $input['show_breakdown'] ) ? 1 : 0;
+
 		return $sanitized;
 	}
 
@@ -150,6 +178,16 @@ class Admin {
 						<?php settings_fields( 'jewellery_settings_group' ); ?>
 
 						<table class="form-table">
+							<tr>
+								<th scope="row">
+									<label for="show_breakdown"><?php esc_html_e( 'Show Calculation on Product Page', 'jewellery-settings' ); ?></label>
+								</th>
+								<td>
+									<input type="checkbox" id="show_breakdown" name="jewellery_settings[show_breakdown]" value="1" <?php checked( $settings['show_breakdown'] ?? 0, 1 ); ?> />
+									<p class="description"><?php esc_html_e( 'Enable this to show the detailed price breakdown on the product page.', 'jewellery-settings' ); ?></p>
+								</td>
+							</tr>
+
 							<tr>
 								<th scope="row">
 									<label for="gold_price"><?php esc_html_e( 'Gold Price (24K)', 'jewellery-settings' ); ?></label>

@@ -244,7 +244,12 @@ class Pricing_Engine {
 			return 0;
 		}
 
-		$value = $variation->get_attribute( 'diamonds-carat' );
+		// Try global attribute first, then custom attribute
+		$value = $variation->get_attribute( 'pa_diamonds-carat' );
+		if ( empty( $value ) ) {
+			$value = $variation->get_attribute( 'diamonds-carat' );
+		}
+
 		if ( $value !== '' && $value !== false ) {
 			return floatval( $value );
 		}
