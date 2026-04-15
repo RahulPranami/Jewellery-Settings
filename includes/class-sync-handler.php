@@ -39,11 +39,13 @@ class Sync_Handler {
 	 * @return array
 	 */
 	public function sync_all_products( $offset = 0, $limit = 10 ) {
+		$page = ( $offset / $limit ) + 1;
+		
 		// Get variable products
 		$args = array(
 			'post_type'      => 'product',
 			'posts_per_page' => $limit,
-			'offset'         => $offset,
+			'paged'          => $page,
 			'tax_query'      => array(
 				array(
 					'taxonomy' => 'product_type',
@@ -54,7 +56,9 @@ class Sync_Handler {
 			'fields'         => 'ids',
 		);
 
-		$products = get_posts( $args );
+		$query = new \WP_Query( $args );
+		$products = $query->posts;
+		$total_products = $query->found_posts;
 
 		if ( empty( $products ) ) {
 			// Update last synced timestamp
@@ -63,11 +67,12 @@ class Sync_Handler {
 			update_option( 'jewellery_settings', $settings );
 
 			return array(
-				'success'    => true,
-				'message'    => __( 'Sync completed', 'jewellery-settings' ),
-				'complete'   => true,
-				'products'   => 0,
-				'variations' => 0,
+				'success'        => true,
+				'message'        => __( 'Sync completed', 'jewellery-settings' ),
+				'complete'       => true,
+				'products'       => 0,
+				'variations'     => 0,
+				'total_products' => $total_products,
 			);
 		}
 
@@ -87,12 +92,16 @@ class Sync_Handler {
 		// Log the sync
 		$this->log_sync( count( $products ), $total_variations, $updated_variations, $errors );
 
+		// Check if this was the last batch
+		$is_last_batch = ( $offset + count( $products ) >= $total_products );
+
 		return array(
 			'success'        => true,
 			'products'       => count( $products ),
 			'variations'     => $updated_variations,
 			'offset'         => $offset + $limit,
-			'total_products' => $this->get_total_products_count(),
+			'total_products' => $total_products,
+			'complete'       => $is_last_batch,
 			'errors'         => $errors,
 		);
 	}

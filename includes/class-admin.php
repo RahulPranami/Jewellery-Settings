@@ -452,7 +452,7 @@ class Admin {
 		}
 
 		$offset = isset( $_POST['offset'] ) ? intval( $_POST['offset'] ) : 0;
-		$limit  = isset( $_POST['limit'] ) ? min( intval( $_POST['limit'] ), 50 ) : 10;
+		$limit  = isset( $_POST['limit'] ) ? min( intval( $_POST['limit'] ), 100 ) : 20;
 
 		$sync_handler = Sync_Handler::get_instance();
 		$result = $sync_handler->sync_all_products( $offset, $limit );
