@@ -43,6 +43,8 @@ class Pricing_Engine {
 	public function calculate_price( $weight, $metal, $purity, $diamond_carat = 0 ) {
 		$settings = get_option( 'jewellery_settings', array() );
 
+		error_log( sprintf( 'Jewellery Settings Calc - Weight: %s, Metal: %s, Purity: %s, Carat: %s', $weight, $metal, $purity, $diamond_carat ) );
+
 		// Validate inputs
 		if ( $weight < 0 ) {
 			return array(
@@ -58,6 +60,8 @@ class Pricing_Engine {
 
 		// Calculate diamond price
 		$diamond_price = $this->calculate_diamond_price( $diamond_carat, $metal, $purity, $settings );
+
+		error_log( 'Jewellery Settings Calc - Metal Price: ' . $metal_price . ', Making: ' . $making . ', Diamond Price: ' . $diamond_price );
 
 		// Other charges (per metal)
 		$other_charges = $this->calculate_other_charges( $metal, $purity, $settings );
@@ -272,11 +276,19 @@ class Pricing_Engine {
 				'attribute_diamonds-carat',
 				'attribute_pa_diamonds_carat',
 				'attribute_diamonds_carat',
+				'attribute_diamonds-(carat)',
+				'attribute_diamonds-(carat)',
 			);
+			
+			// DEBUG: Log ALL meta for this variation to be absolutely sure
+			$all_meta = get_post_meta( $variation_id );
+			error_log( 'Jewellery Settings Debug - Variation ID ' . $variation_id . ' ALL META: ' . print_r( $all_meta, true ) );
+
 			foreach ( $meta_keys as $meta_key ) {
 				$meta_val = get_post_meta( $variation_id, $meta_key, true );
 				if ( ! empty( $meta_val ) ) {
 					$value = $meta_val;
+					error_log( 'Jewellery Settings Debug - Found meta value "' . $value . '" for key "' . $meta_key . '"' );
 					break;
 				}
 			}
