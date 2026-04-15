@@ -180,8 +180,7 @@ jQuery(document).ready(function ($) {
 						setTimeout(function () {
 							isSyncing = false;
 							$('#sync_button').prop('disabled', false).text('Sync All Prices');
-							// Auto reload to show updated prices
-							location.reload();
+							// No longer reloading automatically
 						}, 3000);
 					} else {
 						// Continue syncing - update progress
