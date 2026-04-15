@@ -63,9 +63,11 @@ class Sync_Handler {
 			update_option( 'jewellery_settings', $settings );
 
 			return array(
-				'success' => true,
-				'message' => __( 'Sync completed', 'jewellery-settings' ),
-				'complete' => true,
+				'success'    => true,
+				'message'    => __( 'Sync completed', 'jewellery-settings' ),
+				'complete'   => true,
+				'products'   => 0,
+				'variations' => 0,
 			);
 		}
 

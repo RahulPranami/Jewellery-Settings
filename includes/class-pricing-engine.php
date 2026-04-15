@@ -244,10 +244,20 @@ class Pricing_Engine {
 			return 0;
 		}
 
-		// Try global attribute first, then custom attribute
-		$value = $variation->get_attribute( 'pa_diamonds-carat' );
-		if ( empty( $value ) ) {
-			$value = $variation->get_attribute( 'diamonds-carat' );
+		// Try multiple possible attribute names (global and custom, hyphen and underscore)
+		$attribute_keys = array(
+			'pa_diamonds_carat',
+			'pa_diamonds-carat',
+			'diamonds_carat',
+			'diamonds-carat',
+		);
+
+		$value = '';
+		foreach ( $attribute_keys as $key ) {
+			$value = $variation->get_attribute( $key );
+			if ( ! empty( $value ) ) {
+				break;
+			}
 		}
 
 		if ( $value !== '' && $value !== false ) {

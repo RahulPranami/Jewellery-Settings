@@ -98,16 +98,22 @@ class Plugin {
 							if (response.success) {
 								var data = response.data;
 								var html = '';
-								html += '<div style="display:flex; justify-content:space-between; margin-bottom:5px;"><span>Gold/Metal:</span> <strong>₹' + data.metal_price.toLocaleString() + '</strong></div>';
-								html += '<div style="display:flex; justify-content:space-between; margin-bottom:5px;"><span>Making Charges:</span> <strong>₹' + data.making.toLocaleString() + '</strong></div>';
+								var formatter = new Intl.NumberFormat('en-IN', {
+									style: 'currency',
+									currency: 'INR',
+									minimumFractionDigits: 2
+								});
+
+								html += '<div style="display:flex; justify-content:space-between; margin-bottom:5px;"><span>Gold/Metal:</span> <strong>' + formatter.format(data.metal_price) + '</strong></div>';
+								html += '<div style="display:flex; justify-content:space-between; margin-bottom:5px;"><span>Making Charges:</span> <strong>' + formatter.format(data.making) + '</strong></div>';
 								if (data.diamond_price > 0) {
-									html += '<div style="display:flex; justify-content:space-between; margin-bottom:5px;"><span>Diamond Price:</span> <strong>₹' + data.diamond_price.toLocaleString() + '</strong></div>';
+									html += '<div style="display:flex; justify-content:space-between; margin-bottom:5px;"><span>Diamond Price:</span> <strong>' + formatter.format(data.diamond_price) + '</strong></div>';
 								}
 								if (data.other_charges > 0) {
-									html += '<div style="display:flex; justify-content:space-between; margin-bottom:5px;"><span>Other Charges:</span> <strong>₹' + data.other_charges.toLocaleString() + '</strong></div>';
+									html += '<div style="display:flex; justify-content:space-between; margin-bottom:5px;"><span>Other Charges:</span> <strong>' + formatter.format(data.other_charges) + '</strong></div>';
 								}
 								html += '<hr style="margin: 10px 0; border: 0; border-top: 1px solid #ddd;">';
-								html += '<div style="display:flex; justify-content:space-between; font-weight:bold; font-size:16px;"><span>Total:</span> <span>₹' + data.final_price.toLocaleString() + '</span></div>';
+								html += '<div style="display:flex; justify-content:space-between; font-weight:bold; font-size:16px;"><span>Total:</span> <span>' + formatter.format(data.final_price) + '</span></div>';
 								
 								$content.html(html);
 								$container.slideDown();

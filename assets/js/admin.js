@@ -164,13 +164,17 @@ jQuery(document).ready(function ($) {
 				if (response.success) {
 					const data = response.data;
 
+					// Update totals even if it's the last (complete) batch
+					totalProcessedProducts += data.products || 0;
+					totalUpdatedVariations += data.variations || 0;
+
 					if (data.complete) {
 						// Sync is complete - show success
 						$('#progress_fill').css('width', '100%').text('100%');
 						$('#sync_status').html(
 							'<strong style="color: #28a745;">✓ Sync Completed Successfully!</strong><br/>' +
-							'<span style="font-size: 12px;">Products processed: <strong>' + totalProcessedProducts + '</strong><br/>' +
-							'Variations updated: <strong>' + totalUpdatedVariations + '</strong></span>'
+							'<span style="font-size: 12px;">Total Products processed: <strong>' + totalProcessedProducts + '</strong><br/>' +
+							'Total Variations updated: <strong>' + totalUpdatedVariations + '</strong></span>'
 						);
 
 						setTimeout(function () {
@@ -178,13 +182,11 @@ jQuery(document).ready(function ($) {
 							$('#sync_button').prop('disabled', false).text('Sync All Prices');
 							// Auto reload to show updated prices
 							location.reload();
-						}, 2500);
+						}, 3000);
 					} else {
 						// Continue syncing - update progress
 						currentOffset = data.offset;
-						totalProcessedProducts += data.products || 0;
-						totalUpdatedVariations += data.variations || 0;
-
+						
 						const totalProducts = data.total_products || currentOffset;
 						const progress = Math.min(95, (currentOffset / totalProducts) * 100);
 
@@ -194,8 +196,9 @@ jQuery(document).ready(function ($) {
 
 						$('#sync_status').html(
 							'<strong>Processing...</strong><br/>' +
-							'Batch: ' + data.products + ' products<br/>' +
-							'Total updated: ' + totalUpdatedVariations + ' variations'
+							'Current Batch: ' + data.products + ' products<br/>' +
+							'Total processed: ' + totalProcessedProducts + ' products<br/>' +
+							'Total variations updated: ' + totalUpdatedVariations
 						);
 
 						// Small delay before next batch
