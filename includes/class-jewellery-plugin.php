@@ -104,7 +104,7 @@ class Plugin {
 									minimumFractionDigits: 2
 								});
 
-								html += '<div style="display:flex; justify-content:space-between; margin-bottom:5px;"><span>Gold/Metal:</span> <strong>' + formatter.format(data.metal_price) + '</strong></div>';
+								html += '<div style="display:flex; justify-content:space-between; margin-bottom:5px;"><span>Metal:</span> <strong>' + formatter.format(data.metal_price) + '</strong></div>';
 								html += '<div style="display:flex; justify-content:space-between; margin-bottom:5px;"><span>Making Charges:</span> <strong>' + formatter.format(data.making) + '</strong></div>';
 								if (data.diamond_price > 0) {
 									html += '<div style="display:flex; justify-content:space-between; margin-bottom:5px;"><span>Diamond Price:</span> <strong>' + formatter.format(data.diamond_price) + '</strong></div>';
