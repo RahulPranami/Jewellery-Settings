@@ -248,7 +248,13 @@ class Pricing_Engine {
 			return 0;
 		}
 
-		// Possible keys based on "Diamonds (Carat)"
+		// Diamond carat is a parent product attribute, not a variation attribute.
+		$parent_id = $variation->get_parent_id();
+		$parent    = wc_get_product( $parent_id );
+		if ( ! $parent ) {
+			return 0;
+		}
+
 		$attribute_keys = array(
 			'pa_diamonds-carat',
 			'diamonds-carat',
@@ -262,33 +268,24 @@ class Pricing_Engine {
 
 		$value = '';
 		foreach ( $attribute_keys as $key ) {
-			$value = $variation->get_attribute( $key );
+			$value = $parent->get_attribute( $key );
 			if ( ! empty( $value ) ) {
 				break;
 			}
 		}
 
-		// Fallback: Check variation meta directly if attribute call fails
+		// Fallback: Check parent product meta directly.
 		if ( empty( $value ) ) {
-			// WC Variations often store attributes in meta with 'attribute_' prefix
 			$meta_keys = array(
-				'attribute_pa_diamonds-carat',
-				'attribute_diamonds-carat',
-				'attribute_pa_diamonds_carat',
-				'attribute_diamonds_carat',
-				'attribute_diamonds-(carat)',
-				'attribute_diamonds-(carat)',
+				'_diamonds_carat',
+				'diamonds_carat',
+				'diamonds-carat',
 			);
-			
-			// DEBUG: Log ALL meta for this variation to be absolutely sure
-			$all_meta = get_post_meta( $variation_id );
-			error_log( 'Jewellery Settings Debug - Variation ID ' . $variation_id . ' ALL META: ' . print_r( $all_meta, true ) );
 
 			foreach ( $meta_keys as $meta_key ) {
-				$meta_val = get_post_meta( $variation_id, $meta_key, true );
+				$meta_val = get_post_meta( $parent_id, $meta_key, true );
 				if ( ! empty( $meta_val ) ) {
 					$value = $meta_val;
-					error_log( 'Jewellery Settings Debug - Found meta value "' . $value . '" for key "' . $meta_key . '"' );
 					break;
 				}
 			}
