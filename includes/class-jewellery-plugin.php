@@ -113,7 +113,7 @@ class Plugin {
 									html += '<div style="display:flex; justify-content:space-between; margin-bottom:5px;"><span>Other Charges:</span> <strong>' + formatter.format(data.other_charges) + '</strong></div>';
 								}
 								html += '<hr style="margin: 10px 0; border: 0; border-top: 1px solid #ddd;">';
-								html += '<div style="display:flex; justify-content:space-between; font-weight:bold; font-size:16px;"><span>Total:</span> <span>' + formatter.format(data.final_price) + '</span></div>';
+								html += '<div style="display:flex; justify-content:space-between; font-weight:bold; font-size:16px;"><span>Total (without GST):</span> <span>' + formatter.format(data.final_price) + '</span></div>';
 								
 								$content.html(html);
 								$container.slideDown();
