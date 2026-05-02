@@ -5,7 +5,7 @@ type: project
 ---
 
 ## Plugin Details
-- **Name**: Jewellery Dynamic Pricing
+- **Name**: Sharva Jewellery Settings
 - **Purpose**: Dynamic pricing system for jewellery products based on metal prices, purity, weight, and diamonds
 - **Type**: WooCommerce plugin (no ACF, no external plugins)
 - **Architecture**: OOP, WordPress Settings API, modular structure

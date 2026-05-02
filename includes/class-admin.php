@@ -92,8 +92,8 @@ class Admin {
 	public function add_menu_page() {
 		add_submenu_page(
 			'woocommerce',
-			__( 'Jewellery Pricing', 'jewellery-settings' ),
-			__( 'Jewellery Pricing', 'jewellery-settings' ),
+			__( 'Sharva Jewellery Pricing', 'jewellery-settings' ),
+			__( 'Sharva Jewellery Pricing', 'jewellery-settings' ),
 			'manage_woocommerce',
 			'jewellery_pricing',
 			array( $this, 'render_settings_page' )

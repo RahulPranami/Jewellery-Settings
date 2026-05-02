@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.3] - 2026-05-02
+- Renamed plugin to "Sharva Jewellery Settings".
+- Updated author metadata and project URLs.
+
 ## [1.0.2] - 2026-05-02
 - Improved ZIP archive structure for standard WordPress installation.
 - Fixed vendor folder inclusion in the release package.

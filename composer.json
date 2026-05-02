@@ -1,6 +1,7 @@
 {
     "name": "rahulpranami/jewellery-settings",
-    "description": "Dynamic jewellery pricing system for WooCommerce",
+    "description": "Sharva Jewellery Settings - Dynamic pricing system for WooCommerce",
+    "homepage": "https://sharvaexports.com",
     "type": "wordpress-plugin",
     "require": {
         "yahnis-elsts/plugin-update-checker": "^5.0"

@@ -1,11 +1,11 @@
 <?php
 /**
- * Plugin Name: Jewellery Dynamic Pricing
- * Plugin URI: https://example.com/jewellery-pricing
+ * Plugin Name: Sharva Jewellery Settings
+ * Plugin URI: https://sharvaexports.com
  * Description: Dynamic jewellery pricing system for WooCommerce based on metal, purity, weight, and diamonds
- * Version: 1.0.2
- * Author: Your Name
- * Author URI: https://example.com
+ * Version: 1.0.3
+ * Author: Rahul Pranami
+ * Author URI: https://sharvaexports.com
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Requires at least: 5.0
@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Plugin constants
-define( 'JEWELLERY_SETTINGS_VERSION', '1.0.2' );
+define( 'JEWELLERY_SETTINGS_VERSION', '1.0.3' );
 define( 'JEWELLERY_SETTINGS_PATH', plugin_dir_path( __FILE__ ) );
 define( 'JEWELLERY_SETTINGS_URL', plugin_dir_url( __FILE__ ) );
 define( 'JEWELLERY_SETTINGS_BASENAME', plugin_basename( __FILE__ ) );
