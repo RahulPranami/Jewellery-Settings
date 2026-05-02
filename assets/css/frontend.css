@@ -114,9 +114,10 @@
     background: #fff;
     border-radius: 12px;
     padding: 28px;
-    max-width: 80%;
-    width: 80%;
-    max-height: 88vh;
+    width: 90vw;
+    height: 90vh;
+    max-width: 95%; /* Safety margin */
+    max-height: 95%; /* Safety margin */
     overflow-y: auto;
 }
 

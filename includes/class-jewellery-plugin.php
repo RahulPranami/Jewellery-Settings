@@ -75,11 +75,20 @@ class Plugin {
 
 		// Check if in 'Ring' or 'Rings' category
 		$categories = wp_get_post_terms( $product_id, 'product_cat', array( 'fields' => 'slugs' ) );
-		if ( ! in_array( 'ring', $categories, true ) && ! in_array( 'rings', $categories, true ) ) {
+		$is_ring = false;
+		foreach ( $categories as $slug ) {
+			if ( strpos( strtolower( $slug ), 'ring' ) !== false ) {
+				$is_ring = true;
+				break;
+			}
+		}
+
+		if ( ! $is_ring ) {
 			return;
 		}
 
 		$attributes = $product->get_attributes();
+		$changed = false;
 
 		if ( ! isset( $attributes['pa_ring-size'] ) ) {
 			$attribute = new \WC_Product_Attribute();
@@ -106,6 +115,16 @@ class Plugin {
 			$attribute->set_variation( true );
 
 			$attributes['pa_ring-size'] = $attribute;
+			$changed = true;
+		} else {
+			// Ensure it is set as a variation attribute
+			if ( ! $attributes['pa_ring-size']->get_variation() ) {
+				$attributes['pa_ring-size']->set_variation( true );
+				$changed = true;
+			}
+		}
+
+		if ( $changed ) {
 			$product->set_attributes( $attributes );
 			$product->save();
 		}
@@ -171,11 +190,11 @@ class Plugin {
 					</p>
 
 					<div style="margin-bottom: 20px; text-align: center;">
-						<a href="<?php echo esc_url( JEWELLERY_SETTINGS_URL . 'assets/docs/ring-size-chart.pdf' ); ?>" target="_blank" style="display: inline-block; padding: 8px 15px; background: #8B6914; color: #fff; text-decoration: none; border-radius: 4px; font-size: 14px; margin-bottom: 10px;">
+						<a href="<?php echo esc_url( plugins_url( 'assets/docs/ring-size-chart.pdf', JEWELLERY_SETTINGS_PATH . 'jewellery-settings.php' ) ); ?>" target="_blank" style="display: inline-block; padding: 8px 15px; background: #8B6914; color: #fff; text-decoration: none; border-radius: 4px; font-size: 14px; margin-bottom: 10px;">
 							📄 <?php esc_html_e( 'Download Size Chart (PDF)', 'jewellery-settings' ); ?>
 						</a>
 						<br>
-						<img src="<?php echo esc_url( JEWELLERY_SETTINGS_URL . 'assets/images/ring-size-chart.webp' ); ?>" alt="Ring Size Chart" style="max-width: 100%; height: auto; border: 1px solid #eee; border-radius: 8px;">
+						<img src="<?php echo esc_url( plugins_url( 'assets/images/ring-size-chart.webp', JEWELLERY_SETTINGS_PATH . 'jewellery-settings.php' ) ); ?>" alt="Ring Size Chart" style="max-width: 100%; height: auto; border: 1px solid #eee; border-radius: 8px;">
 					</div>
 
 					<div class="sharva-guide-tip">
@@ -272,7 +291,7 @@ class Plugin {
 		if ( isset( $screen->id ) && strpos( $screen->id, 'jewellery_pricing' ) !== false ) {
 			wp_enqueue_script(
 				'jewellery-admin',
-				JEWELLERY_SETTINGS_URL . 'assets/js/admin.js',
+				plugins_url( 'assets/js/admin.js', JEWELLERY_SETTINGS_PATH . 'jewellery-settings.php' ),
 				array( 'jquery' ),
 				JEWELLERY_SETTINGS_VERSION,
 				true
@@ -290,7 +309,7 @@ class Plugin {
 
 			wp_enqueue_style(
 				'jewellery-admin',
-				JEWELLERY_SETTINGS_URL . 'assets/css/admin.css',
+				plugins_url( 'assets/css/admin.css', JEWELLERY_SETTINGS_PATH . 'jewellery-settings.php' ),
 				array(),
 				JEWELLERY_SETTINGS_VERSION
 			);
@@ -307,7 +326,7 @@ class Plugin {
 
 		wp_enqueue_style(
 			'jewellery-frontend',
-			JEWELLERY_SETTINGS_URL . 'assets/css/frontend.css',
+			plugins_url( 'assets/css/frontend.css', JEWELLERY_SETTINGS_PATH . 'jewellery-settings.php' ),
 			array(),
 			JEWELLERY_SETTINGS_VERSION
 		);
@@ -315,7 +334,7 @@ class Plugin {
 		if ( is_product() ) {
 			wp_enqueue_script(
 				'jewellery-frontend',
-				JEWELLERY_SETTINGS_URL . 'assets/js/frontend.js',
+				plugins_url( 'assets/js/frontend.js', JEWELLERY_SETTINGS_PATH . 'jewellery-settings.php' ),
 				array( 'jquery' ),
 				JEWELLERY_SETTINGS_VERSION,
 				true
