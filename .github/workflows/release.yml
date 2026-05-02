@@ -2,8 +2,8 @@ name: Automate Plugin Release
 
 on:
   push:
-    branches:
-      - main
+    tags:
+      - 'v*'
 
 permissions:
   contents: write
@@ -22,30 +22,16 @@ jobs:
         run: |
           VERSION=$(grep -m 1 "Version:" jewellery-settings.php | awk '{print $NF}')
           echo "VERSION=$VERSION" >> $GITHUB_ENV
-          echo "tag=v$VERSION" >> $GITHUB_OUTPUT
-
-      - name: Check if Tag Exists
-        id: check_tag
-        run: |
-          if git rev-parse "v${{ env.VERSION }}" >/dev/null 2>&1; then
-            echo "exists=true" >> $GITHUB_OUTPUT
-            echo "Tag v${{ env.VERSION }} already exists. Skipping release."
-          else
-            echo "exists=false" >> $GITHUB_OUTPUT
-          fi
 
       - name: Setup PHP
-        if: steps.check_tag.outputs.exists == 'false'
         uses: shivammathur/setup-php@v2
         with:
           php-version: '7.4'
 
       - name: Install dependencies
-        if: steps.check_tag.outputs.exists == 'false'
         run: composer install --no-dev --optimize-autoloader
 
       - name: Create ZIP Archive
-        if: steps.check_tag.outputs.exists == 'false'
         run: |
           # Create a temporary directory to structure the plugin correctly
           mkdir jewellery-settings
@@ -60,11 +46,8 @@ jobs:
           zip -r jewellery-settings.zip jewellery-settings/
 
       - name: Create Release
-        if: steps.check_tag.outputs.exists == 'false'
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v${{ env.VERSION }}
-          name: Release v${{ env.VERSION }}
           files: jewellery-settings.zip
           draft: false
           prerelease: false
