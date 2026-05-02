@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.4] - 2026-05-02
+- Fixed UI clutter on listing pages by hiding ring size swatches.
+- Enqueued frontend styles on shop and archive pages.
+
 ## [1.0.3] - 2026-05-02
 - Renamed plugin to "Sharva Jewellery Settings".
 - Updated author metadata and project URLs.
