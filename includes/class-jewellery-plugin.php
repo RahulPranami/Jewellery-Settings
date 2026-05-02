@@ -171,11 +171,11 @@ class Plugin {
 					</p>
 
 					<div style="margin-bottom: 20px; text-align: center;">
-						<a href="https://sharvaexports.com/wp-content/uploads/2026/04/ring-size-chart.pdf" target="_blank" style="display: inline-block; padding: 8px 15px; background: #8B6914; color: #fff; text-decoration: none; border-radius: 4px; font-size: 14px; margin-bottom: 10px;">
+						<a href="<?php echo esc_url( JEWELLERY_SETTINGS_URL . 'assets/docs/ring-size-chart.pdf' ); ?>" target="_blank" style="display: inline-block; padding: 8px 15px; background: #8B6914; color: #fff; text-decoration: none; border-radius: 4px; font-size: 14px; margin-bottom: 10px;">
 							📄 <?php esc_html_e( 'Download Size Chart (PDF)', 'jewellery-settings' ); ?>
 						</a>
 						<br>
-						<img src="https://sharvaexports.com/wp-content/uploads/2026/04/ring-size-chart.webp" alt="Ring Size Chart" style="max-width: 100%; height: auto; border: 1px solid #eee; border-radius: 8px;">
+						<img src="<?php echo esc_url( JEWELLERY_SETTINGS_URL . 'assets/images/ring-size-chart.webp' ); ?>" alt="Ring Size Chart" style="max-width: 100%; height: auto; border: 1px solid #eee; border-radius: 8px;">
 					</div>
 
 					<div class="sharva-guide-tip">
