@@ -301,7 +301,7 @@ class Plugin {
 	 * Enqueue frontend scripts
 	 */
 	public function enqueue_frontend_scripts() {
-		if ( ! is_product() ) {
+		if ( ! is_product() && ! is_shop() && ! is_product_category() && ! is_product_tag() ) {
 			return;
 		}
 
@@ -312,13 +312,15 @@ class Plugin {
 			JEWELLERY_SETTINGS_VERSION
 		);
 
-		wp_enqueue_script(
-			'jewellery-frontend',
-			JEWELLERY_SETTINGS_URL . 'assets/js/frontend.js',
-			array( 'jquery' ),
-			JEWELLERY_SETTINGS_VERSION,
-			true
-		);
+		if ( is_product() ) {
+			wp_enqueue_script(
+				'jewellery-frontend',
+				JEWELLERY_SETTINGS_URL . 'assets/js/frontend.js',
+				array( 'jquery' ),
+				JEWELLERY_SETTINGS_VERSION,
+				true
+			);
+		}
 	}
 
 	/**
