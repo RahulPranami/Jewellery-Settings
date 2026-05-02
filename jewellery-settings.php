@@ -3,7 +3,7 @@
  * Plugin Name: Sharva Jewellery Settings
  * Plugin URI: https://sharvaexports.com
  * Description: Dynamic jewellery pricing system for WooCommerce based on metal, purity, weight, and diamonds
- * Version: 1.0.4
+ * Version: 1.0.5
  * Author: Rahul Pranami
  * Author URI: https://sharvaexports.com
  * License: GPL v2 or later
@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Plugin constants
-define( 'JEWELLERY_SETTINGS_VERSION', '1.0.4' );
+define( 'JEWELLERY_SETTINGS_VERSION', '1.0.5' );
 define( 'JEWELLERY_SETTINGS_PATH', plugin_dir_path( __FILE__ ) );
 define( 'JEWELLERY_SETTINGS_URL', plugin_dir_url( __FILE__ ) );
 define( 'JEWELLERY_SETTINGS_BASENAME', plugin_basename( __FILE__ ) );

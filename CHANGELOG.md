@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.5] - 2026-05-02
+- Improved asset path resolution using `plugins_url()` to prevent loading errors.
+- Enhanced `auto_add_ring_size_attribute` with better category matching and variation support.
+- Increased Ring Size Guide modal dimensions to 90vw/90vh for better usability.
+
 ## [1.0.4] - 2026-05-02
 - Fixed UI clutter on listing pages by hiding ring size swatches.
 - Enqueued frontend styles on shop and archive pages.
