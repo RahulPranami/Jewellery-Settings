@@ -114,10 +114,20 @@
     background: #fff;
     border-radius: 12px;
     padding: 28px;
-    max-width: 540px;
-    width: 100%;
+    max-width: 80%;
+    width: 80%;
     max-height: 88vh;
     overflow-y: auto;
+}
+
+/* Hide the standard CFVSW swatches for ring size */
+.cfvsw-swatches-container[swatches-attr="attribute_pa_ring-size"] {
+    display: none !important;
+}
+
+/* Also hide the label in the variations table for ring size to avoid redundancy */
+.variations tr:has(label[for="pa_ring-size"]) {
+    display: none !important;
 }
 .sharva-guide-header {
     display: flex;

@@ -178,44 +178,6 @@ class Plugin {
 						<img src="https://sharvaexports.com/wp-content/uploads/2026/04/ring-size-chart.webp" alt="Ring Size Chart" style="max-width: 100%; height: auto; border: 1px solid #eee; border-radius: 8px;">
 					</div>
 
-					<div class="sharva-table-wrap">
-						<table class="sharva-size-table">
-							<thead>
-								<tr>
-									<th><?php esc_html_e( 'India Size', 'jewellery-settings' ); ?></th>
-									<th><?php esc_html_e( 'Diameter (mm)', 'jewellery-settings' ); ?></th>
-									<th><?php esc_html_e( 'Circumference (mm)', 'jewellery-settings' ); ?></th>
-									<th><?php esc_html_e( 'USA & Canada', 'jewellery-settings' ); ?></th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr><td>4</td><td>14.1</td><td>44.2</td><td>3</td></tr>
-								<tr><td>5</td><td>14.5</td><td>45.5</td><td>3½</td></tr>
-								<tr><td>6</td><td>14.9</td><td>46.7</td><td>4</td></tr>
-								<tr><td>7</td><td>15.3</td><td>48.0</td><td>4½</td></tr>
-								<tr><td>8</td><td>15.5</td><td>48.7</td><td>4¾</td></tr>
-								<tr><td>9</td><td>15.9</td><td>50.0</td><td>5¼</td></tr>
-								<tr><td>10</td><td>16.2</td><td>51.2</td><td>5½</td></tr>
-								<tr><td>11</td><td>16.6</td><td>52.5</td><td>6</td></tr>
-								<tr><td>12</td><td>16.9</td><td>53.1</td><td>6¼</td></tr>
-								<tr><td>13</td><td>17.3</td><td>54.4</td><td>6¾</td></tr>
-								<tr><td>14</td><td>17.7</td><td>55.7</td><td>7¼</td></tr>
-								<tr><td>15</td><td>18.1</td><td>56.9</td><td>7¾</td></tr>
-								<tr><td>16</td><td>18.5</td><td>58.1</td><td>8¼</td></tr>
-								<tr><td>17</td><td>18.9</td><td>59.5</td><td>8¾</td></tr>
-								<tr><td>18</td><td>19.2</td><td>60.6</td><td>9¼</td></tr>
-								<tr><td>19</td><td>19.6</td><td>61.6</td><td>9¾</td></tr>
-								<tr><td>20</td><td>20.0</td><td>62.8</td><td>10¼</td></tr>
-								<tr><td>21</td><td>20.4</td><td>64.1</td><td>10¾</td></tr>
-								<tr><td>22</td><td>20.8</td><td>65.3</td><td>11¼</td></tr>
-								<tr><td>23</td><td>21.2</td><td>66.6</td><td>11¾</td></tr>
-								<tr><td>24</td><td>21.5</td><td>67.5</td><td>12</td></tr>
-								<tr><td>25</td><td>21.8</td><td>68.5</td><td>12½</td></tr>
-								<tr><td>26</td><td>22.2</td><td>69.7</td><td>13</td></tr>
-								<tr><td>27</td><td>22.6</td><td>71.0</td><td>13½</td></tr>
-							</tbody>
-						</table>
-					</div>
 					<div class="sharva-guide-tip">
 						<strong><?php esc_html_e( '💡 How to measure:', 'jewellery-settings' ); ?></strong> <?php esc_html_e( 'Wrap a strip of paper around your finger, mark where it overlaps, then measure the length in mm — that is your circumference.', 'jewellery-settings' ); ?>
 					</div>
