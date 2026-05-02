@@ -57,6 +57,58 @@ class Plugin {
 
 		// Ring size guide and custom dropdown
 		add_action( 'woocommerce_before_add_to_cart_button', array( $this, 'add_ring_size_guide' ) );
+
+		// Auto-add ring size attribute for 'Ring' category
+		add_action( 'woocommerce_process_product_meta', array( $this, 'auto_add_ring_size_attribute' ), 20 );
+	}
+
+	/**
+	 * Automatically add ring size attribute to products in the 'Ring' category
+	 *
+	 * @param int $product_id Product ID.
+	 */
+	public function auto_add_ring_size_attribute( $product_id ) {
+		$product = wc_get_product( $product_id );
+		if ( ! $product ) {
+			return;
+		}
+
+		// Check if in 'Ring' or 'Rings' category
+		$categories = wp_get_post_terms( $product_id, 'product_cat', array( 'fields' => 'slugs' ) );
+		if ( ! in_array( 'ring', $categories, true ) && ! in_array( 'rings', $categories, true ) ) {
+			return;
+		}
+
+		$attributes = $product->get_attributes();
+
+		if ( ! isset( $attributes['pa_ring-size'] ) ) {
+			$attribute = new \WC_Product_Attribute();
+			$attribute_id = wc_attribute_taxonomy_id_by_name( 'pa_ring-size' );
+			
+			if ( ! $attribute_id ) {
+				return;
+			}
+
+			$attribute->set_id( $attribute_id );
+			$attribute->set_name( 'pa_ring-size' );
+			
+			// Get all available terms for pa_ring-size
+			$terms = get_terms( array( 'taxonomy' => 'pa_ring-size', 'hide_empty' => false ) );
+			$term_slugs = wp_list_pluck( $terms, 'slug' );
+			
+			if ( empty( $term_slugs ) ) {
+				return;
+			}
+
+			$attribute->set_options( $term_slugs );
+			$attribute->set_position( 0 );
+			$attribute->set_visible( true );
+			$attribute->set_variation( true );
+
+			$attributes['pa_ring-size'] = $attribute;
+			$product->set_attributes( $attributes );
+			$product->save();
+		}
 	}
 
 	/**

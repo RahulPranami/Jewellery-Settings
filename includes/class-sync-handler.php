@@ -81,6 +81,9 @@ class Sync_Handler {
 		$errors = array();
 
 		foreach ( $products as $product_id ) {
+			// Auto-add ring size attribute if applicable before syncing variations
+			Plugin::get_instance()->auto_add_ring_size_attribute( $product_id );
+
 			$result = $this->sync_product_variations( $product_id );
 			$total_variations += $result['total'];
 			$updated_variations += $result['updated'];
