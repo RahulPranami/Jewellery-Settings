@@ -1,0 +1,22 @@
+# Exclude development-only files from git archive (ZIP downloads)
+.git/ export-ignore
+.gitignore export-ignore
+.gitattributes export-ignore
+.geminiignore export-ignore
+.claude/ export-ignore
+.github/ export-ignore
+.vscode/ export-ignore
+ARCHITECTURE.md export-ignore
+development_progress.md export-ignore
+INSTALLATION.md export-ignore
+MEMORY.md export-ignore
+project_overview.md export-ignore
+QUICK_START.md export-ignore
+TODO.md export-ignore
+tests/ export-ignore
+phpunit.xml export-ignore
+composer.json export-ignore
+composer.lock export-ignore
+package.json export-ignore
+package-lock.json export-ignore
+node_modules/ export-ignore
