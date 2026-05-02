@@ -14,7 +14,6 @@ Thumbs.db
 
 # Composer
 vendor/
-composer.lock
 
 # Node (if used for build)
 node_modules/

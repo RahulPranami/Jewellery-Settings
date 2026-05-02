@@ -3,7 +3,7 @@
  * Plugin Name: Jewellery Dynamic Pricing
  * Plugin URI: https://example.com/jewellery-pricing
  * Description: Dynamic jewellery pricing system for WooCommerce based on metal, purity, weight, and diamonds
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: Your Name
  * Author URI: https://example.com
  * License: GPL v2 or later
@@ -23,10 +23,26 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Plugin constants
-define( 'JEWELLERY_SETTINGS_VERSION', '1.0.0' );
+define( 'JEWELLERY_SETTINGS_VERSION', '1.0.1' );
 define( 'JEWELLERY_SETTINGS_PATH', plugin_dir_path( __FILE__ ) );
 define( 'JEWELLERY_SETTINGS_URL', plugin_dir_url( __FILE__ ) );
 define( 'JEWELLERY_SETTINGS_BASENAME', plugin_basename( __FILE__ ) );
+
+// Load Composer autoloader
+if ( file_exists( JEWELLERY_SETTINGS_PATH . 'vendor/autoload.php' ) ) {
+	require_once JEWELLERY_SETTINGS_PATH . 'vendor/autoload.php';
+}
+
+// Initialize Update Checker
+if ( class_exists( 'YahnisElsts\PluginUpdateChecker\V5\PucFactory' ) ) {
+	$myUpdateChecker = \YahnisElsts\PluginUpdateChecker\V5\PucFactory::buildUpdateChecker(
+		'https://github.com/RahulPranami/Jewellery-Settings',
+		__FILE__,
+		'jewellery-settings'
+	);
+	// Optional: Set the branch that contains the stable release.
+	$myUpdateChecker->setBranch( 'main' );
+}
 
 // Load required files
 require_once JEWELLERY_SETTINGS_PATH . 'includes/class-jewellery-plugin.php';
