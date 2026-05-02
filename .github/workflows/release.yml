@@ -47,11 +47,17 @@ jobs:
       - name: Create ZIP Archive
         if: steps.check_tag.outputs.exists == 'false'
         run: |
-          # Use zip to include vendor folder and respect .gitattributes for exclusions if needed
-          # But zip doesn't natively respect .gitattributes like git archive does.
-          # We can use git archive and then add the vendor folder to it.
-          git archive --format zip --output jewellery-settings.zip HEAD
-          zip -ur jewellery-settings.zip vendor/
+          # Create a temporary directory to structure the plugin correctly
+          mkdir jewellery-settings
+          
+          # Use git archive to fill the directory (respecting .gitattributes)
+          git archive HEAD | tar -x -C jewellery-settings
+          
+          # Move vendor folder into the structure
+          cp -r vendor jewellery-settings/
+          
+          # Create the final ZIP
+          zip -r jewellery-settings.zip jewellery-settings/
 
       - name: Create Release
         if: steps.check_tag.outputs.exists == 'false'

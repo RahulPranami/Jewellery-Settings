@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.2] - 2026-05-02
+- Improved ZIP archive structure for standard WordPress installation.
+- Fixed vendor folder inclusion in the release package.
+
 ## [1.0.1] - 2026-05-02
 - Added automated release system using GitHub Actions.
 - Integrated Plugin Update Checker for automated WordPress updates.
