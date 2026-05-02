@@ -206,3 +206,19 @@
     .sharva-size-table th,
     .sharva-size-table td { padding: 8px 10px; font-size: 12px; }
 }
+
+
+/* ── Show the Clear button for Ring Size ── */
+a.reset_variations {
+    display: inline-block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    font-size: 13px;
+    color: #c0392b;
+    text-decoration: underline;
+    cursor: pointer;
+    margin-top: 8px;
+}
+a.reset_variations:hover {
+    color: #922b21;
+}
