@@ -41,22 +41,24 @@
         var $el   = $(el);
         var slug  = $el.data('value');
         var title = $el.data('title');
+        var $wrapper = $el.closest('.sharva-size-wrapper');
+        var attrName = $wrapper.data('attribute');
 
         // 1. Update dropdown display text
-        $('#sharvaSelectedText')
+        $wrapper.find('#sharvaSelectedText')
             .text('Size: ' + title)
             .css({ 'color': '#1a1a1a', 'font-weight': '600' });
 
         // 2. Mark selected item
-        $('.sharva-dropdown-item').removeClass('active');
+        $wrapper.find('.sharva-dropdown-item').removeClass('active');
         $el.addClass('active');
 
         // 3. Close dropdown
-        $('#sharvaDropdownList').removeClass('open');
-        $('#sharvaArrow').css('transform', 'rotate(0deg)');
+        $wrapper.find('#sharvaDropdownList').removeClass('open');
+        $wrapper.find('#sharvaArrow').css('transform', 'rotate(0deg)');
 
         // 4. Click the CFVSW swatch on the page
-        var $swatchContainer = $('.cfvsw-swatches-container[swatches-attr="attribute_pa_ring-size"]');
+        var $swatchContainer = $('.cfvsw-swatches-container[swatches-attr="attribute_' + attrName + '"], .cfvsw-swatches-container[swatches-attr="' + attrName + '"]');
         if ($swatchContainer.length) {
             $swatchContainer
                 .find('.cfvsw-swatches-option[data-slug="' + slug + '"]')
@@ -64,7 +66,7 @@
         }
 
         // 5. Set the hidden WooCommerce select
-        var $sel = $('select[name="attribute_pa_ring-size"]');
+        var $sel = $('select[name="attribute_' + attrName + '"]');
         if ($sel.length) {
             $sel.val(slug);
             $sel.get(0).dispatchEvent(new Event('input',  { bubbles: true }));
@@ -75,7 +77,7 @@
         }
 
         // 6. Green confirmation border on dropdown box
-        $('#sharvaDropdownSelected').css({
+        $wrapper.find('#sharvaDropdownSelected').css({
             'border-color': '#2e7d32',
             'background':   '#f0faf0'
         });
@@ -83,28 +85,51 @@
 
     /* ── Clear / Reset button ── */
     $(document).on('click', 'a.reset_variations', function () {
-        resetSharvaDropdown();
+        $('.sharva-size-wrapper').each(function() {
+            var $wrapper = $(this);
+            var type = $wrapper.find('.sharva-dropdown-selected').text().includes('Ring') ? 'Ring' : 'Bangle';
+            $wrapper.find('#sharvaSelectedText')
+                .text('Select ' + type + ' Size')
+                .css({ 'color': '#888', 'font-weight': '400' });
+
+            $wrapper.find('.sharva-dropdown-item').removeClass('active');
+
+            $wrapper.find('#sharvaDropdownSelected').css({
+                'border-color': '#ccc',
+                'background':   '#fff'
+            });
+
+            $wrapper.find('#sharvaDropdownList').removeClass('open');
+            $wrapper.find('#sharvaArrow').css('transform', 'rotate(0deg)');
+        });
     });
 
     /* ── Sync: if user clicks CFVSW swatch directly,
           update our dropdown display too ── */
     $(document).on(
         'click',
-        '.cfvsw-swatches-container[swatches-attr="attribute_pa_ring-size"] .cfvsw-swatches-option',
+        '.cfvsw-swatches-container .cfvsw-swatches-option',
         function () {
             var $swatch = $(this);
+            var $container = $swatch.closest('.cfvsw-swatches-container');
+            var attrFull = $container.attr('swatches-attr');
+            var attrName = attrFull.replace('attribute_', '');
+            
+            var $wrapper = $('.sharva-size-wrapper[data-attribute="' + attrName + '"]');
+            if (!$wrapper.length) return;
+
             var slug    = $swatch.data('slug');
             var title   = $swatch.data('title') || slug;
 
-            $('#sharvaSelectedText')
+            $wrapper.find('#sharvaSelectedText')
                 .text('Size: ' + title)
                 .css({ 'color': '#1a1a1a', 'font-weight': '600' });
 
-            $('.sharva-dropdown-item').each(function () {
+            $wrapper.find('.sharva-dropdown-item').each(function () {
                 $(this).toggleClass('active', $(this).data('value') === slug);
             });
 
-            $('#sharvaDropdownSelected').css({
+            $wrapper.find('#sharvaDropdownSelected').css({
                 'border-color': '#2e7d32',
                 'background':   '#f0faf0'
             });

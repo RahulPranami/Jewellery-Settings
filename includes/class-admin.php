@@ -90,13 +90,32 @@ class Admin {
 	 * Add menu page
 	 */
 	public function add_menu_page() {
+		add_menu_page(
+			__( 'Sharva Jewellery', 'jewellery-settings' ),
+			__( 'Sharva Jewellery', 'jewellery-settings' ),
+			'manage_woocommerce',
+			'jewellery_pricing',
+			array( $this, 'render_settings_page' ),
+			'dashicons-admin-generic',
+			56
+		);
+
 		add_submenu_page(
-			'woocommerce',
-			__( 'Sharva Jewellery Pricing', 'jewellery-settings' ),
-			__( 'Sharva Jewellery Pricing', 'jewellery-settings' ),
+			'jewellery_pricing',
+			__( 'Pricing Settings', 'jewellery-settings' ),
+			__( 'Pricing Settings', 'jewellery-settings' ),
 			'manage_woocommerce',
 			'jewellery_pricing',
 			array( $this, 'render_settings_page' )
+		);
+
+		add_submenu_page(
+			'jewellery_pricing',
+			__( 'Attribute Mapping', 'jewellery-settings' ),
+			__( 'Attribute Mapping', 'jewellery-settings' ),
+			'manage_woocommerce',
+			'jewellery_attribute_mapping',
+			array( $this, 'render_attribute_mapping_page' )
 		);
 	}
 
@@ -113,6 +132,176 @@ class Admin {
 				'default'           => array(),
 			)
 		);
+
+		register_setting(
+			'jewellery_mapping_group',
+			'jewellery_attribute_mapping',
+			array(
+				'type'              => 'array',
+				'sanitize_callback' => array( $this, 'sanitize_mapping_settings' ),
+				'default'           => array(),
+			)
+		);
+	}
+
+	/**
+	 * Sanitize mapping settings
+	 *
+	 * @param array $input Settings input.
+	 * @return array
+	 */
+	public function sanitize_mapping_settings( $input ) {
+		if ( ! is_array( $input ) ) {
+			return array();
+		}
+
+		$sanitized = array();
+		if ( isset( $input['mappings'] ) && is_array( $input['mappings'] ) ) {
+			foreach ( $input['mappings'] as $index => $mapping ) {
+				if ( ! empty( $mapping['category'] ) && ! empty( $mapping['attribute'] ) ) {
+					$sanitized['mappings'][] = array(
+						'category'  => sanitize_text_field( $mapping['category'] ),
+						'attribute' => sanitize_text_field( $mapping['attribute'] ),
+						'type'      => sanitize_text_field( $mapping['type'] ?? 'ring' ),
+					);
+				}
+			}
+		}
+
+		return $sanitized;
+	}
+
+	/**
+	 * Render attribute mapping page
+	 */
+	public function render_attribute_mapping_page() {
+		if ( ! current_user_can( 'manage_woocommerce' ) ) {
+			wp_die( esc_html__( 'Unauthorized', 'jewellery-settings' ) );
+		}
+
+		$mapping_settings = get_option( 'jewellery_attribute_mapping', array( 'mappings' => array() ) );
+		$mappings = $mapping_settings['mappings'] ?? array();
+
+		// Get all product categories
+		$categories = get_terms( array(
+			'taxonomy'   => 'product_cat',
+			'hide_empty' => false,
+		) );
+
+		// Get all global attributes
+		$wc_attributes = wc_get_attribute_taxonomies();
+		?>
+		<div class="wrap jewellery-wrap">
+			<h1><?php esc_html_e( 'Category Attribute Mapping', 'jewellery-settings' ); ?></h1>
+			<p><?php esc_html_e( 'Automatically assign specific attributes to products based on their category.', 'jewellery-settings' ); ?></p>
+
+			<form method="post" action="options.php">
+				<?php settings_fields( 'jewellery_mapping_group' ); ?>
+				
+				<table class="widefat fixed striped" style="margin-top: 20px;">
+					<thead>
+						<tr>
+							<th><?php esc_html_e( 'Product Category', 'jewellery-settings' ); ?></th>
+							<th><?php esc_html_e( 'Attribute Name (Slug)', 'jewellery-settings' ); ?></th>
+							<th><?php esc_html_e( 'Size Guide Type', 'jewellery-settings' ); ?></th>
+							<th style="width: 100px;"><?php esc_html_e( 'Actions', 'jewellery-settings' ); ?></th>
+						</tr>
+					</thead>
+					<tbody id="jewellery-mapping-rows">
+						<?php if ( empty( $mappings ) ) : ?>
+							<tr class="no-mappings-row">
+								<td colspan="4" style="text-align: center; padding: 20px;"><?php esc_html_e( 'No mappings found. Click "Add New Mapping" to get started.', 'jewellery-settings' ); ?></td>
+							</tr>
+						<?php else : ?>
+							<?php foreach ( $mappings as $index => $mapping ) : ?>
+								<tr>
+									<td>
+										<select name="jewellery_attribute_mapping[mappings][<?php echo $index; ?>][category]">
+											<option value=""><?php esc_html_e( 'Select Category', 'jewellery-settings' ); ?></option>
+											<?php foreach ( $categories as $cat ) : ?>
+												<option value="<?php echo esc_attr( $cat->slug ); ?>" <?php selected( $mapping['category'], $cat->slug ); ?>>
+													<?php echo esc_html( $cat->name ); ?>
+												</option>
+											<?php endforeach; ?>
+										</select>
+									</td>
+									<td>
+										<input type="text" name="jewellery_attribute_mapping[mappings][<?php echo $index; ?>][attribute]" value="<?php echo esc_attr( $mapping['attribute'] ); ?>" placeholder="e.g. pa_ring-size" class="regular-text" style="width: 100%;" />
+										<p class="description"><?php esc_html_e( 'Use "pa_" prefix (e.g. pa_bangle-size)', 'jewellery-settings' ); ?></p>
+									</td>
+									<td>
+										<select name="jewellery_attribute_mapping[mappings][<?php echo $index; ?>][type]">
+											<option value="ring" <?php selected( $mapping['type'] ?? 'ring', 'ring' ); ?>><?php esc_html_e( 'Ring Size Guide', 'jewellery-settings' ); ?></option>
+											<option value="bangle" <?php selected( $mapping['type'] ?? 'ring', 'bangle' ); ?>><?php esc_html_e( 'Bangle/Bracelet Size Guide', 'jewellery-settings' ); ?></option>
+										</select>
+									</td>
+									<td>
+										<button type="button" class="button remove-mapping-row"><?php esc_html_e( 'Remove', 'jewellery-settings' ); ?></button>
+									</td>
+								</tr>
+							<?php endforeach; ?>
+						<?php endif; ?>
+					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="4">
+								<button type="button" id="add-mapping-row" class="button button-secondary"><?php esc_html_e( 'Add New Mapping', 'jewellery-settings' ); ?></button>
+							</td>
+						</tr>
+					</tfoot>
+				</table>
+
+				<script type="text/template" id="mapping-row-template">
+					<tr>
+						<td>
+							<select name="jewellery_attribute_mapping[mappings][{{index}}][category]">
+								<option value=""><?php esc_html_e( 'Select Category', 'jewellery-settings' ); ?></option>
+								<?php foreach ( $categories as $cat ) : ?>
+									<option value="<?php echo esc_attr( $cat->slug ); ?>"><?php echo esc_html( $cat->name ); ?></option>
+								<?php endforeach; ?>
+							</select>
+						</td>
+						<td>
+							<input type="text" name="jewellery_attribute_mapping[mappings][{{index}}][attribute]" value="" placeholder="e.g. pa_ring-size" class="regular-text" style="width: 100%;" />
+							<p class="description"><?php esc_html_e( 'Use "pa_" prefix (e.g. pa_bangle-size)', 'jewellery-settings' ); ?></p>
+						</td>
+						<td>
+							<select name="jewellery_attribute_mapping[mappings][{{index}}][type]">
+								<option value="ring"><?php esc_html_e( 'Ring Size Guide', 'jewellery-settings' ); ?></option>
+								<option value="bangle"><?php esc_html_e( 'Bangle/Bracelet Size Guide', 'jewellery-settings' ); ?></option>
+							</select>
+						</td>
+						<td>
+							<button type="button" class="button remove-mapping-row"><?php esc_html_e( 'Remove', 'jewellery-settings' ); ?></button>
+						</td>
+					</tr>
+				</script>
+
+				<?php submit_button(); ?>
+			</form>
+		</div>
+
+		<script type="text/javascript">
+			jQuery(document).ready(function($) {
+				var $tbody = $('#jewellery-mapping-rows');
+				var template = $('#mapping-row-template').html();
+				var nextIndex = <?php echo count( $mappings ); ?>;
+
+				$('#add-mapping-row').on('click', function() {
+					$('.no-mappings-row').remove();
+					var row = template.replace(/{{index}}/g, nextIndex++);
+					$tbody.append(row);
+				});
+
+				$tbody.on('click', '.remove-mapping-row', function() {
+					$(this).closest('tr').remove();
+					if ($tbody.children().length === 0) {
+						$tbody.append('<tr class="no-mappings-row"><td colspan="4" style="text-align: center; padding: 20px;">' + <?php echo wp_json_encode( __( 'No mappings found. Click "Add New Mapping" to get started.', 'jewellery-settings' ) ); ?> + '</td></tr>');
+					}
+				});
+			});
+		</script>
+		<?php
 	}
 
 	/**
@@ -280,6 +469,30 @@ class Admin {
 								</th>
 								<td>
 									<input type="number" id="silver_other_charges" name="jewellery_settings[silver_other_charges]" value="<?php echo esc_attr( $settings['silver_other_charges'] ?? '' ); ?>" step="0.01" min="0" />
+								</td>
+							</tr>
+
+							<tr>
+								<th colspan="2"><h3><?php esc_html_e( 'Size Guide Assets', 'jewellery-settings' ); ?></h3></th>
+							</tr>
+
+							<tr>
+								<th scope="row">
+									<label for="bangle_size_guide_img"><?php esc_html_e( 'Bangle Size Guide Image URL', 'jewellery-settings' ); ?></label>
+								</th>
+								<td>
+									<input type="text" id="bangle_size_guide_img" name="jewellery_settings[bangle_size_guide_img]" value="<?php echo esc_attr( $settings['bangle_size_guide_img'] ?? '' ); ?>" class="regular-text" />
+									<p class="description"><?php esc_html_e( 'Optional: URL to a custom bangle size chart image.', 'jewellery-settings' ); ?></p>
+								</td>
+							</tr>
+
+							<tr>
+								<th scope="row">
+									<label for="bangle_size_guide_pdf"><?php esc_html_e( 'Bangle Size Guide PDF URL', 'jewellery-settings' ); ?></label>
+								</th>
+								<td>
+									<input type="text" id="bangle_size_guide_pdf" name="jewellery_settings[bangle_size_guide_pdf]" value="<?php echo esc_attr( $settings['bangle_size_guide_pdf'] ?? '' ); ?>" class="regular-text" />
+									<p class="description"><?php esc_html_e( 'Optional: URL to a custom bangle size chart PDF.', 'jewellery-settings' ); ?></p>
 								</td>
 							</tr>
 

@@ -121,20 +121,19 @@
     overflow-y: auto;
 }
 
-/* Hide the standard CFVSW swatches for ring size */
-.cfvsw-swatches-container[swatches-attr="attribute_pa_ring-size"],
-.cfvsw-swatches-container[swatches-attr="pa_ring-size"],
-[data-attribute_name="attribute_pa_ring-size"],
-.variations tr:has(label[for="pa_ring-size"]) {
+/* Hide the standard CFVSW swatches for size attributes */
+.cfvsw-swatches-container[swatches-attr*="size"],
+[data-attribute_name*="size"],
+.variations tr:has(label[for*="size"]) {
     display: none !important;
 }
 
-/* Hide ring size swatches specifically on listing/archive pages to prevent clutter */
-.archive .cfvsw-swatches-container[swatches-attr*="ring-size"],
-.shop .cfvsw-swatches-container[swatches-attr*="ring-size"],
-.tax-product_cat .cfvsw-swatches-container[swatches-attr*="ring-size"],
-.archive .cfvsw-swatches-option[data-slug*="ring-size"],
-.shop .cfvsw-swatches-option[data-slug*="ring-size"] {
+/* Hide size swatches specifically on listing/archive pages to prevent clutter */
+.archive .cfvsw-swatches-container[swatches-attr*="size"],
+.shop .cfvsw-swatches-container[swatches-attr*="size"],
+.tax-product_cat .cfvsw-swatches-container[swatches-attr*="size"],
+.archive .cfvsw-swatches-option[data-slug*="size"],
+.shop .cfvsw-swatches-option[data-slug*="size"] {
     display: none !important;
 }
 .sharva-guide-header {

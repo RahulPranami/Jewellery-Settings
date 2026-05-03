@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.8] - 2026-05-03
+- Added automatic creation of missing global attributes defined in mappings.
+- Changed attribute mapping to support custom attribute slugs via text input.
+- Improved plugin portability for live site migrations.
+
+## [1.0.7] - 2026-05-03
+- Added dedicated Attribute Mapping admin page.
+- Added support for Bangle/Bracelet size guides with comprehensive charts.
+- Scraped and integrated bangle size data from CaratLane, ORRA, and Tales of Diamond.
+- Generalized frontend size guide and custom dropdown to support multiple attribute types.
+
 ## [1.0.6] - 2026-05-03
 - Updated documentation for automated and local release processes.
 - Synchronized versioning for new release tag.
