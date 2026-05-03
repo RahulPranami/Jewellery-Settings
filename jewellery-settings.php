@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Plugin constants
-define( 'JEWELLERY_SETTINGS_VERSION', '1.0.5' );
+define( 'JEWELLERY_SETTINGS_VERSION', '1.0.6' );
 define( 'JEWELLERY_SETTINGS_PATH', plugin_dir_path( __FILE__ ) );
 define( 'JEWELLERY_SETTINGS_URL', plugin_dir_url( __FILE__ ) );
 define( 'JEWELLERY_SETTINGS_BASENAME', plugin_basename( __FILE__ ) );

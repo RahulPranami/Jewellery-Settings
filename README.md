@@ -289,6 +289,50 @@ To enable debug logging:
 2. Set `define( 'WP_DEBUG', true );`
 3. Set `define( 'WP_DEBUG_LOG', true );`
 
+## Development & Release
+
+### Prerequisites for Development
+- **Composer**: Required for managing dependencies (like the update checker)
+- **Git**: Required for version control and release automation
+
+### Automated Release (Recommended)
+This project uses GitHub Actions for automated releases. To trigger a new release:
+
+1. **Update Version**: Increment the version number in `jewellery-settings.php` and `CHANGELOG.md`.
+2. **Commit Changes**: Commit and push your changes to the `main` branch.
+3. **Tag and Push**: Create a new tag and push it:
+   ```bash
+   git tag v1.0.6
+   git push origin v1.0.6
+   ```
+4. **Verify**: The GitHub Action will automatically create a release with the `jewellery-settings.zip` file.
+
+### Local Build (Manual)
+If you need to generate the plugin ZIP locally for testing or another system:
+
+1. **Install Production Dependencies**:
+   ```bash
+   composer install --no-dev --optimize-autoloader
+   ```
+
+2. **Generate ZIP Package**:
+   ```bash
+   # Create temporary structure
+   mkdir jewellery-settings
+   
+   # Extract clean files from git (ignores development files)
+   git archive HEAD | tar -x -C jewellery-settings
+   
+   # Include vendor directory
+   cp -r vendor jewellery-settings/
+   
+   # Create final ZIP
+   zip -r jewellery-settings.zip jewellery-settings/
+   
+   # Cleanup
+   rm -rf jewellery-settings
+   ```
+
 ## Support & Contribution
 
 For issues, feature requests, or contributions, please refer to the plugin repository or contact the developer.

@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.6] - 2026-05-03
+- Updated documentation for automated and local release processes.
+- Synchronized versioning for new release tag.
+
 ## [1.0.5] - 2026-05-02
 - Improved asset path resolution using `plugins_url()` to prevent loading errors.
 - Enhanced `auto_add_ring_size_attribute` with better category matching and variation support.

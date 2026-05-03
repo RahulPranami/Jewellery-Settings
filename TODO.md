@@ -86,6 +86,7 @@
 - [x] Improved progress indicators
 - [x] Better error handling UI
 - [x] Responsive mobile design
+- [x] Documented automated and local release processes in README.md and MEMORY.md
 
 ## Remaining Tasks (Optional)
 - [ ] Unit tests
