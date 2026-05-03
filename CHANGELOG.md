@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.9] - 2026-05-03
+- Switched update checker to use GitHub Releases for better installation reliability.
+- Fixed folder naming issues during automatic WordPress updates.
+
 ## [1.0.8] - 2026-05-03
 - Added automatic creation of missing global attributes defined in mappings.
 - Changed attribute mapping to support custom attribute slugs via text input.
